@@ -1,5 +1,12 @@
-# Cert Viewer
+#Cert Viewer
 Gtk+3 based application for viewing SSL/TLS certificates (At the present stage it's not yet functional).
 
-##Building
-g++ --std=c++11 main.cpp -o bin/certview \`pkg-config gtkmm-3.0 --cflags --libs\`
+##Library dependencies
+- gtkmm-3.0
+
+##Building on systems with gcc
+Go to the directory containing CMakeLists.txt and execute:
+```
+cmake .
+make
+```
