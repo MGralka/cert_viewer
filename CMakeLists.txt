@@ -10,7 +10,7 @@ link_directories(${GTKMM_LIBRARY_DIRS})
 
 add_definitions(${GTKMM_CFLAGS_OTHER})
 
-ADD_EXECUTABLE(certviewer main.cpp)
+ADD_EXECUTABLE(certviewer main.cpp mainwindow.cpp)
 set_target_properties(certviewer PROPERTIES
 	CXX_STANDARD 11
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"

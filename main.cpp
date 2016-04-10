@@ -15,19 +15,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "mainwindow.hpp"
 
-#include <gtkmm.h>
 #include <iostream>
-
-void openButtonClicked()
-{
-    std::cout << "Open button clicked" << std::endl;
-}
-
-void aboutButtonClicked()
-{
-    std::cout << "About button clicked" << std::endl;
-}
 
 int main(int argc, char* argv[])
 {
@@ -36,28 +26,13 @@ int main(int argc, char* argv[])
     {
         Glib::RefPtr<Gtk::Builder> builder =
             Gtk::Builder::create_from_file("ui/cert_viewer.glade");
-        Gtk::Window* main = nullptr;
-        builder->get_widget("main_window", main);
+        MainWindow* main = nullptr;
+        builder->get_widget_derived("main_window", main);
         if(main)
-        {
-            Gtk::ToolButton* openFile = nullptr;
-            Gtk::ToolButton* saveFile = nullptr;
-            Gtk::ToolButton* saveAsFile = nullptr;
-            Gtk::ToolButton* about  = nullptr;
+            app->run(*main);
 
-            builder->get_widget("open_button", openFile);
-            builder->get_widget("save_button", saveFile);
-            builder->get_widget("save_as_button", saveAsFile);
-            builder->get_widget("about_button", about);
-
-            if(openFile)
-                openFile->signal_clicked().connect(sigc::ptr_fun(openButtonClicked));
-
-            if(about)
-                about->signal_clicked().connect(sigc::ptr_fun(aboutButtonClicked));
-
-            return app->run(*main);
-        }
+        delete main;
+        return 0;
     }
     catch(const Glib::FileError& e)
     {
@@ -72,5 +47,5 @@ int main(int argc, char* argv[])
         std::cerr << e.what() << std::endl;
     }
 
-    return -1;
+    return 1;
 }
