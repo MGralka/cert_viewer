@@ -22,12 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 MainWindow::MainWindow(BaseObjectType* base,
         const Glib::RefPtr<Gtk::Builder>& b): Gtk::Window(base), builder(b),
         openFile(nullptr), saveFile(nullptr), saveAsFile(nullptr),
-        about(nullptr)
+        about(nullptr), aboutDlg(nullptr)
 {
     builder->get_widget("open_button", openFile);
     builder->get_widget("save_button", saveFile);
     builder->get_widget("save_as_button", saveAsFile);
     builder->get_widget("about_button", about);
+    builder->get_widget("aboutdialog", aboutDlg);
 
     if(openFile)
         openFile->signal_clicked().connect(sigc::mem_fun(*this,
@@ -50,5 +51,6 @@ void MainWindow::openBtnClicked()
 
 void MainWindow::aboutBtnClicked()
 {
-    std::cout << "About Clicked from class!" << std::endl;
+    if(aboutDlg)
+        aboutDlg->show();
 }

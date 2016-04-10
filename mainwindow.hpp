@@ -36,6 +36,7 @@ protected:
     Gtk::ToolButton* saveFile;
     Gtk::ToolButton* saveAsFile;
     Gtk::ToolButton* about;
+    Gtk::AboutDialog* aboutDlg;
 };
 
 #endif
