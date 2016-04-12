@@ -1,6 +1,6 @@
 /*
 Cert Viewer, Gtk+3 based application for viewing SSL/TLS certificates
-Copyright (C) 2016  Mateusz Gralka
+Copyright (C) 2016 Mateusz Gralka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,24 +24,37 @@ MainWindow::MainWindow(BaseObjectType* base,
         openFile(nullptr), saveFile(nullptr), saveAsFile(nullptr),
         about(nullptr), aboutDlg(nullptr)
 {
-    builder->get_widget("open_button", openFile);
-    builder->get_widget("save_button", saveFile);
-    builder->get_widget("save_as_button", saveAsFile);
-    builder->get_widget("about_button", about);
-    builder->get_widget("aboutdialog", aboutDlg);
-
-    if(openFile)
-        openFile->signal_clicked().connect(sigc::mem_fun(*this,
-                &MainWindow::openBtnClicked));
-
-    if(about)
-        about->signal_clicked().connect(sigc::mem_fun(*this,
-                &MainWindow::aboutBtnClicked));
+    getWidgets();
+    connectSignals();
 }
 
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::getWidgets()
+{
+    builder->get_widget("open_button", openFile);
+    builder->get_widget("save_button", saveFile);
+    builder->get_widget("save_as_button", saveAsFile);
+    builder->get_widget("about_button", about);
+    builder->get_widget("aboutdialog", aboutDlg);
+}
+
+void MainWindow::connectSignals()
+{
+    if(openFile)
+        openFile->signal_clicked().connect(sigc::mem_fun(*this,
+            &MainWindow::openBtnClicked));
+
+    if(about)
+        about->signal_clicked().connect(sigc::mem_fun(*this,
+            &MainWindow::aboutBtnClicked));
+
+    if(aboutDlg)
+        aboutDlg->signal_response().connect(sigc::mem_fun(*this,
+            &MainWindow::aboutDialogResponse));
 }
 
 void MainWindow::openBtnClicked()
@@ -53,4 +66,9 @@ void MainWindow::aboutBtnClicked()
 {
     if(aboutDlg)
         aboutDlg->show();
+}
+
+void MainWindow::aboutDialogResponse(int responseId)
+{
+    aboutDlg->hide();
 }

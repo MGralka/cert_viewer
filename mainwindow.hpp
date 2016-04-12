@@ -1,6 +1,6 @@
 /*
 Cert Viewer, Gtk+3 based application for viewing SSL/TLS certificates
-Copyright (C) 2016  Mateusz Gralka
+Copyright (C) 2016 Mateusz Gralka
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,8 +27,11 @@ public:
     virtual ~MainWindow();
 
 protected:
+    void getWidgets();
+    void connectSignals();
     void openBtnClicked();
     void aboutBtnClicked();
+    void aboutDialogResponse(int responseId);
 
     const Glib::RefPtr<Gtk::Builder>& builder;
 
