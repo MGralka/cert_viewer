@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 MainWindow::MainWindow(BaseObjectType* base,
         const Glib::RefPtr<Gtk::Builder>& b): Gtk::Window(base), builder(b),
         openFile(nullptr), saveFile(nullptr), saveAsFile(nullptr),
-        about(nullptr), aboutDlg(nullptr)
+        about(nullptr), aboutDlg(nullptr), fileChooserDlg(nullptr)
 {
     getWidgets();
     connectSignals();
@@ -40,6 +40,7 @@ void MainWindow::getWidgets()
     builder->get_widget("save_as_button", saveAsFile);
     builder->get_widget("about_button", about);
     builder->get_widget("aboutdialog", aboutDlg);
+    builder->get_widget("filechooserdialog", fileChooserDlg);
 }
 
 void MainWindow::connectSignals()
@@ -55,11 +56,20 @@ void MainWindow::connectSignals()
     if(aboutDlg)
         aboutDlg->signal_response().connect(sigc::mem_fun(*this,
             &MainWindow::aboutDialogResponse));
+
+    if(fileChooserDlg)
+    {
+	fileChooserDlg->add_button("Anuluj", Gtk::RESPONSE_CANCEL);
+	fileChooserDlg->add_button("OK", Gtk::RESPONSE_OK);
+	fileChooserDlg->signal_response().connect(sigc::mem_fun(*this,
+            &MainWindow::fileChooserResponse));
+    }
 }
 
 void MainWindow::openBtnClicked()
 {
-    std::cout << "Open Clicked from class!" << std::endl;
+    if(fileChooserDlg)
+        fileChooserDlg->show();
 }
 
 void MainWindow::aboutBtnClicked()
@@ -71,4 +81,19 @@ void MainWindow::aboutBtnClicked()
 void MainWindow::aboutDialogResponse(int responseId)
 {
     aboutDlg->hide();
+}
+
+void MainWindow::fileChooserResponse(int responseId)
+{
+    fileChooserDlg->hide();
+    switch(responseId)
+    {
+        case Gtk::RESPONSE_OK:
+            std::cout << "Choosen file: " << fileChooserDlg->get_filename() << std::endl;
+	break;
+	case Gtk::RESPONSE_CANCEL:
+	break;
+	default:
+	break;
+    }
 }

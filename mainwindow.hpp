@@ -32,6 +32,7 @@ protected:
     void openBtnClicked();
     void aboutBtnClicked();
     void aboutDialogResponse(int responseId);
+    void fileChooserResponse(int responseId);
 
     const Glib::RefPtr<Gtk::Builder>& builder;
 
@@ -40,6 +41,7 @@ protected:
     Gtk::ToolButton* saveAsFile;
     Gtk::ToolButton* about;
     Gtk::AboutDialog* aboutDlg;
+    Gtk::FileChooserDialog* fileChooserDlg;
 };
 
 #endif
