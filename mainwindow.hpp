@@ -29,6 +29,7 @@ public:
 protected:
     void getWidgets();
     void connectSignals();
+    void addFilters(Gtk::FileChooserDialog* d);
     void openBtnClicked();
     void aboutBtnClicked();
     void aboutDialogResponse(int responseId);
@@ -37,7 +38,6 @@ protected:
     const Glib::RefPtr<Gtk::Builder>& builder;
 
     Gtk::ToolButton* openFile;
-    Gtk::ToolButton* saveFile;
     Gtk::ToolButton* saveAsFile;
     Gtk::ToolButton* about;
     Gtk::AboutDialog* aboutDlg;

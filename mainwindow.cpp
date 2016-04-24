@@ -21,7 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 MainWindow::MainWindow(BaseObjectType* base,
         const Glib::RefPtr<Gtk::Builder>& b): Gtk::Window(base), builder(b),
-        openFile(nullptr), saveFile(nullptr), saveAsFile(nullptr),
+        openFile(nullptr), saveAsFile(nullptr),
         about(nullptr), aboutDlg(nullptr), fileChooserDlg(nullptr)
 {
     getWidgets();
@@ -36,7 +36,6 @@ MainWindow::~MainWindow()
 void MainWindow::getWidgets()
 {
     builder->get_widget("open_button", openFile);
-    builder->get_widget("save_button", saveFile);
     builder->get_widget("save_as_button", saveAsFile);
     builder->get_widget("about_button", about);
     builder->get_widget("aboutdialog", aboutDlg);
@@ -59,11 +58,29 @@ void MainWindow::connectSignals()
 
     if(fileChooserDlg)
     {
-	fileChooserDlg->add_button("Anuluj", Gtk::RESPONSE_CANCEL);
-	fileChooserDlg->add_button("OK", Gtk::RESPONSE_OK);
-	fileChooserDlg->signal_response().connect(sigc::mem_fun(*this,
+        fileChooserDlg->add_button("Anuluj", Gtk::RESPONSE_CANCEL);
+        fileChooserDlg->add_button("OK", Gtk::RESPONSE_OK);
+        fileChooserDlg->signal_response().connect(sigc::mem_fun(*this,
             &MainWindow::fileChooserResponse));
+        addFilters(fileChooserDlg);
     }
+}
+
+void MainWindow::addFilters(Gtk::FileChooserDialog* d)
+{
+    auto certFilter = Gtk::FileFilter::create();
+    certFilter->set_name("Plik certyfikatu");
+    certFilter->add_pattern("*.pem");
+    certFilter->add_pattern("*.crt");
+    certFilter->add_pattern("*.cer");
+    certFilter->add_pattern("*.der");
+
+    auto crlFilter = Gtk::FileFilter::create();
+    crlFilter->set_name("Plik CRL");
+    crlFilter->add_pattern("*.crl");
+
+    d->add_filter(certFilter);
+    d->add_filter(crlFilter);
 }
 
 void MainWindow::openBtnClicked()
@@ -90,10 +107,10 @@ void MainWindow::fileChooserResponse(int responseId)
     {
         case Gtk::RESPONSE_OK:
             std::cout << "Choosen file: " << fileChooserDlg->get_filename() << std::endl;
-	break;
-	case Gtk::RESPONSE_CANCEL:
-	break;
-	default:
-	break;
+        break;
+        case Gtk::RESPONSE_CANCEL:
+        break;
+        default:
+        break;
     }
 }
