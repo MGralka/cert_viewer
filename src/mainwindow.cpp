@@ -97,7 +97,12 @@ void MainWindow::aboutBtnClicked()
 
 void MainWindow::aboutDialogResponse(int responseId)
 {
-    aboutDlg->hide();
+    switch(responseId)
+    {
+        default:
+            aboutDlg->hide();
+            break;
+    }
 }
 
 void MainWindow::fileChooserResponse(int responseId)
