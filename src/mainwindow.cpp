@@ -79,8 +79,13 @@ void MainWindow::addFilters(Gtk::FileChooserDialog* d)
     crlFilter->set_name("Plik CRL");
     crlFilter->add_pattern("*.crl");
 
+    auto allFilesFilter = Gtk::FileFilter::create();
+    allFilesFilter->set_name("Wszystkie pliki");
+    allFilesFilter->add_pattern("*");
+
     d->add_filter(certFilter);
     d->add_filter(crlFilter);
+    d->add_filter(allFilesFilter);
 }
 
 void MainWindow::openBtnClicked()
@@ -111,7 +116,7 @@ void MainWindow::fileChooserResponse(int responseId)
     switch(responseId)
     {
         case Gtk::RESPONSE_OK:
-            std::cout << "Choosen file: " << fileChooserDlg->get_filename() << std::endl;
+            std::cout << "Chosen file: " << fileChooserDlg->get_filename() << std::endl;
         break;
         case Gtk::RESPONSE_CANCEL:
         break;
