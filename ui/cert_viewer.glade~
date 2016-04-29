@@ -24,7 +24,6 @@
     <property name="window_position">center</property>
     <property name="default_width">600</property>
     <property name="default_height">600</property>
-    <property name="icon_name">application-certificate</property>
     <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
     <child>
       <object class="GtkBox" id="top_box">
