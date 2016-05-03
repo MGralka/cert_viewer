@@ -2,8 +2,6 @@ cmake_minimum_required(VERSION 3.4)
 
 project(CertViewer CXX)
 
-find_package(OpenSSL REQUIRED)
-
 if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR
    "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(warnings "-Wall -Wextra -Werror")

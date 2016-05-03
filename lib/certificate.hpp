@@ -30,7 +30,7 @@ public:
     ~Certificate();
 
 protected:
-    //void readCertificateData();
+    void readCertificateData(X509* x);
 
     X509* cert;
 };

@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "certificate.hpp"
 
+#include <iostream>
 #include <stdexcept>
 
 #include <openssl/x509.h>
@@ -24,9 +25,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Certificate::Certificate(const std::string& file): cert(nullptr)
 {
-FILE* f = std::fopen(file.c_str(), "r");
-if(!PEM_read_X509(f, &cert, nullptr, nullptr))
-	throw std::runtime_error("certificate reading failed");
+    FILE* f = std::fopen(file.c_str(), "r");
+    if(f == nullptr)
+        throw std::runtime_error("error while opening file");
+
+    if(!PEM_read_X509(f, &cert, nullptr, nullptr))
+        throw std::runtime_error("certificate reading failed");
+
+    readCertificateData(cert);
 }
 
 Certificate::Certificate(X509* c): cert(c)
@@ -36,4 +42,15 @@ Certificate::Certificate(X509* c): cert(c)
 Certificate::~Certificate()
 {
 
+}
+
+void Certificate::readCertificateData(X509* x)
+{
+    std::string subject;
+    subject.reserve(1024);
+
+    X509_NAME_oneline(X509_get_subject_name(x), &subject.front(),
+            subject.capacity());
+
+    std::cout << "Subject: " << subject << std::endl;
 }

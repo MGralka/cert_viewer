@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "mainwindow.hpp"
 
+#include "certificate.hpp"
+
 #include <iostream>
 
 MainWindow::MainWindow(BaseObjectType* base,
@@ -123,4 +125,5 @@ void MainWindow::fileChooserResponse(int responseId)
         default:
         break;
     }
+    Certificate c(fileChooserDlg->get_filename());
 }
