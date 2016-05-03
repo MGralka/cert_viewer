@@ -3,6 +3,7 @@ Gtk+3 based application for viewing SSL/TLS certificates (At the present stage i
 
 ##Library dependencies
 - gtkmm-3.0
+- openssl
 
 ##Building on systems with gcc
 Go to the directory containing CMakeLists.txt and execute:
