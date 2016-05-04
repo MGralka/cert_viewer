@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <openssl/x509.h>
 #include <openssl/pem.h>
+#include <openssl/bio.h>
 
 Certificate::Certificate(const std::string& file): cert(nullptr)
 {
@@ -46,11 +47,18 @@ Certificate::~Certificate()
 
 void Certificate::readCertificateData(X509* x)
 {
-    std::string subject;
-    subject.reserve(1024);
+    BUF_MEM* buffer = nullptr;
 
-    X509_NAME_oneline(X509_get_subject_name(x), &subject.front(),
-            subject.capacity());
+    BIO* memBio = BIO_new(BIO_s_mem());
+    //Don't free the buffer when freeing the BIO
+    int ret = BIO_set_close(memBio, BIO_NOCLOSE);
+    int numRead = X509_NAME_print_ex(memBio, X509_get_subject_name(x),
+           0, XN_FLAG_ONELINE);
+    if(ret && numRead > 0)
+        BIO_get_mem_ptr(memBio, &buffer);
+
+    std::string subject(buffer->data);
+    BIO_free(memBio);
 
     std::cout << "Subject: " << subject << std::endl;
 }
