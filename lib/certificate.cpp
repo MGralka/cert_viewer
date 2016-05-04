@@ -50,11 +50,9 @@ void Certificate::readCertificateData(X509* x)
     BUF_MEM* buffer = nullptr;
 
     BIO* memBio = BIO_new(BIO_s_mem());
-    //Don't free the buffer when freeing the BIO
-    int ret = BIO_set_close(memBio, BIO_NOCLOSE);
     int numRead = X509_NAME_print_ex(memBio, X509_get_subject_name(x),
            0, XN_FLAG_ONELINE);
-    if(ret && numRead > 0)
+    if(numRead > 0)
         BIO_get_mem_ptr(memBio, &buffer);
 
     std::string subject(buffer->data);
