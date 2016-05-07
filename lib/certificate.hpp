@@ -31,8 +31,11 @@ public:
 
 protected:
     void readCertificateData(X509* x);
+    std::string readSubject(X509* x);
+    std::string readIssuer(X509* x);
 
     X509* cert;
+
 };
 
 #endif

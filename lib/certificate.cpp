@@ -38,14 +38,23 @@ Certificate::Certificate(const std::string& file): cert(nullptr)
 
 Certificate::Certificate(X509* c): cert(c)
 {
+    cert = X509_dup(c);
 }
 
 Certificate::~Certificate()
 {
-
+    X509_free(cert);
 }
 
 void Certificate::readCertificateData(X509* x)
+{
+    std::string subject = readSubject(x);
+    std::string issuer = readIssuer(x);
+    std::cout << subject << std::endl;
+    std::cout << issuer << std::endl;
+}
+
+std::string Certificate::readSubject(X509* x)
 {
     BUF_MEM* buffer = nullptr;
 
@@ -57,6 +66,20 @@ void Certificate::readCertificateData(X509* x)
 
     std::string subject(buffer->data);
     BIO_free(memBio);
+    return subject;
+}
 
-    std::cout << "Subject: " << subject << std::endl;
+std::string Certificate::readIssuer(X509* x)
+{
+    BUF_MEM* buffer = nullptr;
+
+    BIO* memBio = BIO_new(BIO_s_mem());
+    int numRead = X509_NAME_print_ex(memBio, X509_get_issuer_name(x),
+           0, XN_FLAG_ONELINE);
+    if(numRead > 0)
+        BIO_get_mem_ptr(memBio, &buffer);
+
+    std::string issuer(buffer->data);
+    BIO_free(memBio);
+    return issuer;
 }
