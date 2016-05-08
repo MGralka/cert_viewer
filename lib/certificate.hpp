@@ -29,13 +29,18 @@ public:
     Certificate(X509* x);
     ~Certificate();
 
+    std::string getSubject() const {return subject;}
+    std::string getIssuer() const {return issuer;}
+
 protected:
     void readCertificateData(X509* x);
-    std::string readSubject(X509* x);
-    std::string readIssuer(X509* x);
+    void readSubject(X509* x);
+    void readIssuer(X509* x);
+
+    std::string subject;
+    std::string issuer;
 
     X509* cert;
-
 };
 
 #endif
