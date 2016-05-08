@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "mainwindow.hpp"
 
-#include "certificate.hpp"
-
 #include <iostream>
 
 MainWindow::MainWindow(BaseObjectType* base,
@@ -28,6 +26,8 @@ MainWindow::MainWindow(BaseObjectType* base,
 {
     getWidgets();
     connectSignals();
+    listStore = Gtk::ListStore::create(certColumns);
+    listView->set_model(listStore);
 }
 
 MainWindow::~MainWindow()
@@ -42,6 +42,7 @@ void MainWindow::getWidgets()
     builder->get_widget("about_button", about);
     builder->get_widget("aboutdialog", aboutDlg);
     builder->get_widget("filechooserdialog", fileChooserDlg);
+    builder->get_widget("treeview", listView);
 }
 
 void MainWindow::connectSignals()
@@ -65,6 +66,12 @@ void MainWindow::connectSignals()
         fileChooserDlg->signal_response().connect(sigc::mem_fun(*this,
             &MainWindow::fileChooserResponse));
         addFilters(fileChooserDlg);
+    }
+
+    if(listView)
+    {
+        listView->append_column("Key Name", certColumns.name);
+        listView->append_column("Value", certColumns.value);
     }
 }
 
@@ -118,12 +125,34 @@ void MainWindow::fileChooserResponse(int responseId)
     switch(responseId)
     {
         case Gtk::RESPONSE_OK:
-            std::cout << "Chosen file: " << fileChooserDlg->get_filename() << std::endl;
-        break;
+        {
+            if(!fileChooserDlg->get_filename().empty())
+            {
+                Certificate c(fileChooserDlg->get_filename());
+                displayCertificate(c);
+            }
+            break;
+        }
         case Gtk::RESPONSE_CANCEL:
         break;
         default:
         break;
     }
-    Certificate c(fileChooserDlg->get_filename());
+
+}
+
+void MainWindow::displayCertificate(const Certificate& c)
+{
+    if(!listStore)
+        return;
+
+    listStore->clear();
+
+    Gtk::TreeModel::Row row = *(listStore->append());
+    row[certColumns.name] = "Subject";
+    row[certColumns.value] = c.getSubject();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Issuer";
+    row[certColumns.value] = c.getIssuer();
 }

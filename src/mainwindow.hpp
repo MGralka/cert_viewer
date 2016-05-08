@@ -20,6 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <gtkmm.h>
 
+#include "certificate.hpp"
+#include "certificatecolumns.hpp"
+
 class MainWindow: public Gtk::Window
 {
 public:
@@ -34,6 +37,7 @@ protected:
     void aboutBtnClicked();
     void aboutDialogResponse(int responseId);
     void fileChooserResponse(int responseId);
+    void displayCertificate(const Certificate& c);
 
     const Glib::RefPtr<Gtk::Builder>& builder;
 
@@ -42,6 +46,10 @@ protected:
     Gtk::ToolButton* about;
     Gtk::AboutDialog* aboutDlg;
     Gtk::FileChooserDialog* fileChooserDlg;
+
+    Gtk::TreeView* listView;
+    Glib::RefPtr<Gtk::ListStore> listStore;
+    CertificateColumns certColumns;
 };
 
 #endif

@@ -48,13 +48,11 @@ Certificate::~Certificate()
 
 void Certificate::readCertificateData(X509* x)
 {
-    std::string subject = readSubject(x);
-    std::string issuer = readIssuer(x);
-    std::cout << subject << std::endl;
-    std::cout << issuer << std::endl;
+    readSubject(x);
+    readIssuer(x);
 }
 
-std::string Certificate::readSubject(X509* x)
+void Certificate::readSubject(X509* x)
 {
     BUF_MEM* buffer = nullptr;
 
@@ -64,12 +62,11 @@ std::string Certificate::readSubject(X509* x)
     if(numRead > 0)
         BIO_get_mem_ptr(memBio, &buffer);
 
-    std::string subject(buffer->data);
+    subject.assign(buffer->data);
     BIO_free(memBio);
-    return subject;
 }
 
-std::string Certificate::readIssuer(X509* x)
+void Certificate::readIssuer(X509* x)
 {
     BUF_MEM* buffer = nullptr;
 
@@ -79,7 +76,6 @@ std::string Certificate::readIssuer(X509* x)
     if(numRead > 0)
         BIO_get_mem_ptr(memBio, &buffer);
 
-    std::string issuer(buffer->data);
+    issuer.assign(buffer->data);
     BIO_free(memBio);
-    return issuer;
 }
