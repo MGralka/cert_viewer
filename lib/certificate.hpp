@@ -31,14 +31,20 @@ public:
 
     std::string getSubject() const {return subject;}
     std::string getIssuer() const {return issuer;}
+    std::string getVersion() const {return version;}
+    std::string getSerial() const {return serial;}
 
 protected:
     void readCertificateData(X509* x);
     void readSubject(X509* x);
     void readIssuer(X509* x);
+    void readVersion(X509* x);
+    void readSerial(X509* x);
 
     std::string subject;
     std::string issuer;
+    std::string version;
+    std::string serial;
 
     X509* cert;
 };

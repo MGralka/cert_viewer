@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <stdexcept>
 
+#include <openssl/asn1.h>
 #include <openssl/x509.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
@@ -50,6 +51,8 @@ void Certificate::readCertificateData(X509* x)
 {
     readSubject(x);
     readIssuer(x);
+    readVersion(x);
+    readSerial(x);
 }
 
 void Certificate::readSubject(X509* x)
@@ -62,7 +65,7 @@ void Certificate::readSubject(X509* x)
     if(numRead > 0)
         BIO_get_mem_ptr(memBio, &buffer);
 
-    subject.assign(buffer->data);
+    subject.assign(buffer->data, buffer->length);
     BIO_free(memBio);
 }
 
@@ -76,6 +79,19 @@ void Certificate::readIssuer(X509* x)
     if(numRead > 0)
         BIO_get_mem_ptr(memBio, &buffer);
 
-    issuer.assign(buffer->data);
+    issuer.assign(buffer->data, buffer->length);
     BIO_free(memBio);
+}
+
+void Certificate::readVersion(X509* x)
+{
+    version = std::to_string(X509_get_version(x) + 1);
+}
+
+void Certificate::readSerial(X509* x)
+{
+    ASN1_INTEGER* s = X509_get_serialNumber(x);
+    long val = ASN1_INTEGER_get(s);
+    std::cout << "val " << val << std::endl;
+    serial = std::to_string(ASN1_INTEGER_get(s));
 }
