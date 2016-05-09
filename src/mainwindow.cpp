@@ -149,6 +149,14 @@ void MainWindow::displayCertificate(const Certificate& c)
     listStore->clear();
 
     Gtk::TreeModel::Row row = *(listStore->append());
+    row[certColumns.name] = "Version";
+    row[certColumns.value] = c.getVersion();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Serial";
+    row[certColumns.value] = c.getSerial();
+
+    row = *(listStore->append());
     row[certColumns.name] = "Subject";
     row[certColumns.value] = c.getSubject();
 
