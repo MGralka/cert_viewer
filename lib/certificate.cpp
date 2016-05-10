@@ -91,7 +91,9 @@ void Certificate::readVersion(X509* x)
 void Certificate::readSerial(X509* x)
 {
     ASN1_INTEGER* s = X509_get_serialNumber(x);
-    long val = ASN1_INTEGER_get(s);
-    std::cout << "val " << val << std::endl;
-    serial = std::to_string(ASN1_INTEGER_get(s));
+    BIGNUM* bn = ASN1_INTEGER_to_BN(s, nullptr);
+    char* hexStr = BN_bn2hex(bn);
+    serial.assign(hexStr);
+
+    OPENSSL_free(hexStr);
 }
