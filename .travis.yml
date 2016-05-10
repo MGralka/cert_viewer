@@ -10,7 +10,7 @@ compiler:
     - clang
 
 before_install:
-    - sudo apt-get -gg update
+    - sudo apt-get -qq update
     - sudo apt-get install libssl-dev
     - sudo apt-get install libgtkmm-3.0-dev
     - sudo apt-get install cmake
