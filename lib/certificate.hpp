@@ -33,6 +33,8 @@ public:
     std::string getIssuer() const {return issuer;}
     std::string getVersion() const {return version;}
     std::string getSerial() const {return serial;}
+    std::string getNotBefore() const {return notBefore;}
+    std::string getNotAfter() const {return notAfter;}
 
 protected:
     void readCertificateData(X509* x);
@@ -40,11 +42,14 @@ protected:
     void readIssuer(X509* x);
     void readVersion(X509* x);
     void readSerial(X509* x);
+    void readDates(X509* x);
 
     std::string subject;
     std::string issuer;
     std::string version;
     std::string serial;
+    std::string notBefore;
+    std::string notAfter;
 
     X509* cert;
 };

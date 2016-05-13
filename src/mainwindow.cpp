@@ -163,4 +163,12 @@ void MainWindow::displayCertificate(const Certificate& c)
     row = *(listStore->append());
     row[certColumns.name] = "Issuer";
     row[certColumns.value] = c.getIssuer();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Not Before";
+    row[certColumns.value] = c.getNotBefore();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Not After";
+    row[certColumns.value] = c.getNotAfter();
 }

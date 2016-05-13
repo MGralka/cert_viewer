@@ -53,6 +53,7 @@ void Certificate::readCertificateData(X509* x)
     readIssuer(x);
     readVersion(x);
     readSerial(x);
+    readDates(x);
 }
 
 void Certificate::readSubject(X509* x)
@@ -96,4 +97,34 @@ void Certificate::readSerial(X509* x)
     serial.assign(hexStr);
 
     OPENSSL_free(hexStr);
+}
+
+void Certificate::readDates(X509* x)
+{
+    BUF_MEM* buffer = nullptr;
+    ASN1_TIME* nb = X509_get_notBefore(x);
+    ASN1_TIME* na = X509_get_notAfter(x);
+
+    BIO* memBio = BIO_new(BIO_s_mem());
+    if(nb)
+    {
+        int br = ASN1_TIME_print(memBio, nb);
+        if(br == 1)
+        {
+            BIO_get_mem_ptr(memBio, &buffer);
+            notBefore.assign(buffer->data, buffer->length);
+        }
+    }
+
+    int bret = BIO_reset(memBio);
+    if(bret && na)
+    {
+        int br = ASN1_TIME_print(memBio, na);
+        if(br == 1)
+        {
+            BIO_get_mem_ptr(memBio, &buffer);
+            notAfter.assign(buffer->data, buffer->length);
+        }
+    }
+    BIO_free(memBio);
 }
