@@ -22,6 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <openssl/asn1.h>
 #include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
 
@@ -54,6 +55,8 @@ void Certificate::readCertificateData(X509* x)
     readVersion(x);
     readSerial(x);
     readDates(x);
+    readCA(x);
+    readPublicKey(x);
 }
 
 void Certificate::readSubject(X509* x)
@@ -127,4 +130,31 @@ void Certificate::readDates(X509* x)
         }
     }
     BIO_free(memBio);
+}
+
+void Certificate::readCA(X509* x)
+{
+    isCA = (X509_check_ca(x) != 0);
+}
+
+void Certificate::readPublicKey(X509* )
+{
+//    BUF_MEM* buffer = nullptr;
+//
+//    BIO* memBio = BIO_new(BIO_s_mem());
+//    EVP_PKEY* pkey = X509_get_pubkey(x);
+//    if(pkey)
+//    {
+//        X509_ALGOR *sigAlg = X509_get0_tbs_sigalg(x);
+//        if(sigAlg)
+//        {
+//            i2a_ASN1_OBJECT(memBio, sigAlg->algorithm);
+//            BIO_get_mem_ptr(memBio, &buffer);
+//            publicKey.assign(buffer->data, buffer->length);
+//            std::cout << publicKey << std::endl;
+//        }
+//    }
+
+ //   EVP_PKEY_free(pkey);
+ //   BIO_free(memBio);
 }

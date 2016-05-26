@@ -43,6 +43,10 @@ void MainWindow::getWidgets()
     builder->get_widget("aboutdialog", aboutDlg);
     builder->get_widget("filechooserdialog", fileChooserDlg);
     builder->get_widget("treeview", listView);
+
+    builder->get_widget("open_item", openItem);
+    builder->get_widget("about_item", aboutItem);
+    builder->get_widget("quit_item", quitItem);
 }
 
 void MainWindow::connectSignals()
@@ -55,9 +59,22 @@ void MainWindow::connectSignals()
         about->signal_clicked().connect(sigc::mem_fun(*this,
             &MainWindow::aboutBtnClicked));
 
+    if(openItem)
+        openItem->signal_activate().connect(sigc::mem_fun(*this,
+            &MainWindow::openBtnClicked));
+
+    if(aboutItem)
+        aboutItem->signal_activate().connect(sigc::mem_fun(*this,
+            &MainWindow::aboutBtnClicked));
+
     if(aboutDlg)
         aboutDlg->signal_response().connect(sigc::mem_fun(*this,
             &MainWindow::aboutDialogResponse));
+
+    if(quitItem)
+        quitItem->signal_activate().connect(sigc::mem_fun(*this,
+                    &MainWindow::quitItemClicked));
+
 
     if(fileChooserDlg)
     {
@@ -107,6 +124,11 @@ void MainWindow::aboutBtnClicked()
 {
     if(aboutDlg)
         aboutDlg->show();
+}
+
+void MainWindow::quitItemClicked()
+{
+    hide();
 }
 
 void MainWindow::aboutDialogResponse(int responseId)
@@ -171,4 +193,8 @@ void MainWindow::displayCertificate(const Certificate& c)
     row = *(listStore->append());
     row[certColumns.name] = "Not After";
     row[certColumns.value] = c.getNotAfter();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Is CA";
+    row[certColumns.value] = (c.getIsCA() == true) ? "TRUE" : "FALSE";
 }

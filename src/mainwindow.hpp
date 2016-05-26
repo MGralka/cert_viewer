@@ -35,6 +35,7 @@ protected:
     void addFilters(Gtk::FileChooserDialog* d);
     void openBtnClicked();
     void aboutBtnClicked();
+    void quitItemClicked();
     void aboutDialogResponse(int responseId);
     void fileChooserResponse(int responseId);
     void displayCertificate(const Certificate& c);
@@ -44,6 +45,10 @@ protected:
     Gtk::ToolButton* openFile;
     Gtk::ToolButton* saveAsFile;
     Gtk::ToolButton* about;
+    Gtk::ImageMenuItem* openItem;
+    Gtk::ImageMenuItem* aboutItem;
+    Gtk::ImageMenuItem* quitItem;
+
     Gtk::AboutDialog* aboutDlg;
     Gtk::FileChooserDialog* fileChooserDlg;
 

@@ -35,6 +35,9 @@ public:
     std::string getSerial() const {return serial;}
     std::string getNotBefore() const {return notBefore;}
     std::string getNotAfter() const {return notAfter;}
+    bool getIsCA() const {return isCA;}
+    std::string getSignatureAlgorithm() const {return sigAlg;}
+    std::string getPublicKey() const {return publicKey;}
 
 protected:
     void readCertificateData(X509* x);
@@ -43,6 +46,8 @@ protected:
     void readVersion(X509* x);
     void readSerial(X509* x);
     void readDates(X509* x);
+    void readCA(X509* x);
+    void readPublicKey(X509* x);
 
     std::string subject;
     std::string issuer;
@@ -50,6 +55,9 @@ protected:
     std::string serial;
     std::string notBefore;
     std::string notAfter;
+    bool isCA;
+    std::string sigAlg;
+    std::string publicKey;
 
     X509* cert;
 };
