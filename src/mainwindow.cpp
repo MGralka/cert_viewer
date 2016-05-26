@@ -143,6 +143,7 @@ void MainWindow::aboutDialogResponse(int responseId)
 
 void MainWindow::fileChooserResponse(int responseId)
 {
+    try{
     fileChooserDlg->hide();
     switch(responseId)
     {
@@ -159,6 +160,14 @@ void MainWindow::fileChooserResponse(int responseId)
         break;
         default:
         break;
+    }
+    }
+    catch(std::runtime_error& e)
+    {
+        Gtk::MessageDialog errDialog(*this, "An error occuerd", false,
+                Gtk::MESSAGE_ERROR);
+        errDialog.set_secondary_text(e.what());
+        errDialog.run();
     }
 
 }
