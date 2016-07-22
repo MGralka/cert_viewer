@@ -78,7 +78,7 @@ void MainWindow::connectSignals()
 
     if(fileChooserDlg)
     {
-        fileChooserDlg->add_button("Anuluj", Gtk::RESPONSE_CANCEL);
+        fileChooserDlg->add_button("Cancel", Gtk::RESPONSE_CANCEL);
         fileChooserDlg->add_button("OK", Gtk::RESPONSE_OK);
         fileChooserDlg->signal_response().connect(sigc::mem_fun(*this,
             &MainWindow::fileChooserResponse));
@@ -95,18 +95,18 @@ void MainWindow::connectSignals()
 void MainWindow::addFilters(Gtk::FileChooserDialog* d)
 {
     auto certFilter = Gtk::FileFilter::create();
-    certFilter->set_name("Plik certyfikatu");
+    certFilter->set_name("Certificate files");
     certFilter->add_pattern("*.pem");
     certFilter->add_pattern("*.crt");
     certFilter->add_pattern("*.cer");
     certFilter->add_pattern("*.der");
 
     auto crlFilter = Gtk::FileFilter::create();
-    crlFilter->set_name("Plik CRL");
+    crlFilter->set_name("CRL files");
     crlFilter->add_pattern("*.crl");
 
     auto allFilesFilter = Gtk::FileFilter::create();
-    allFilesFilter->set_name("Wszystkie pliki");
+    allFilesFilter->set_name("All file types");
     allFilesFilter->add_pattern("*");
 
     d->add_filter(certFilter);
