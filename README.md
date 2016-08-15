@@ -6,8 +6,14 @@ Gtk+3 based application for viewing SSL/TLS certificates (At the present stage i
 - openssl
 
 ##Building on systems with gcc
-Go to the directory containing CMakeLists.txt and execute:
+Go to the build directory and execute:
 ```
-cmake .
+cmake ..
 make
+
+##Running
+The executable must be run from the paroject's parent directory that contains the
+ui/ directory with glade files:
 ```
+build/certviewer
+
