@@ -10,10 +10,11 @@ Go to the build directory and execute:
 ```
 cmake ..
 make
+```
 
 ##Running
 The executable must be run from the paroject's parent directory that contains the
-ui/ directory with glade files:
+**ui/** directory with glade files:
 ```
 build/certviewer
-
+```
