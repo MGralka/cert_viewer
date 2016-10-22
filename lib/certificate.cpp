@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <openssl/x509v3.h>
 #include <openssl/pem.h>
 #include <openssl/bio.h>
+#include <openssl/bn.h>
 
 Certificate::Certificate(const std::string& file): cert(nullptr)
 {
@@ -56,6 +57,7 @@ void Certificate::readCertificateData(X509* x)
     readSerial(x);
     readDates(x);
     readCA(x);
+    readSignatureAlgorithm(x);
     readPublicKey(x);
 }
 
@@ -137,7 +139,7 @@ void Certificate::readCA(X509* x)
     isCA = (X509_check_ca(x) != 0);
 }
 
-void Certificate::readPublicKey(X509* x)
+void Certificate::readSignatureAlgorithm(X509* x)
 {
     BUF_MEM* buffer = nullptr;
 
@@ -158,4 +160,11 @@ void Certificate::readPublicKey(X509* x)
 
     EVP_PKEY_free(pkey);
     BIO_free(memBio);
+}
+
+void Certificate::readPublicKey(X509* x)
+{
+    EVP_PKEY* pkey = X509_get_pubkey(x);
+    if(pkey)
+	publicKey.assign(BN_bn2hex(pkey->pkey.rsa->n));
 }

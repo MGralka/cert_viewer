@@ -47,6 +47,7 @@ protected:
     void readSerial(X509* x);
     void readDates(X509* x);
     void readCA(X509* x);
+    void readSignatureAlgorithm(X509* x);
     void readPublicKey(X509* x);
 
     std::string subject;

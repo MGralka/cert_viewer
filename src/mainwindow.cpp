@@ -18,6 +18,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "mainwindow.hpp"
 
 #include <iostream>
+#include <string>
+#include <algorithm>
 
 MainWindow::MainWindow(BaseObjectType* base,
         const Glib::RefPtr<Gtk::Builder>& b): Gtk::Window(base), builder(b),
@@ -210,4 +212,10 @@ void MainWindow::displayCertificate(const Certificate& c)
     row = *(listStore->append());
     row[certColumns.name] = "Signature algorithm";
     row[certColumns.value] = c.getSignatureAlgorithm();
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Public Key";
+    std::string shortPub = c.getPublicKey().erase(32) + "...";
+    std::transform(shortPub.begin(), shortPub.end(), shortPub.begin(), ::tolower);
+    row[certColumns.value] = shortPub;
 }
