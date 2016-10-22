@@ -36,7 +36,7 @@ public:
     std::string getNotBefore() const {return notBefore;}
     std::string getNotAfter() const {return notAfter;}
     bool getIsCA() const {return isCA;}
-    std::string getSignatureAlgorithm() const {return sigAlg;}
+    std::string getSignatureAlgorithm() const {return signatureAlgorithm;}
     std::string getPublicKey() const {return publicKey;}
 
 protected:
@@ -56,7 +56,7 @@ protected:
     std::string notBefore;
     std::string notAfter;
     bool isCA;
-    std::string sigAlg;
+    std::string signatureAlgorithm;
     std::string publicKey;
 
     X509* cert;

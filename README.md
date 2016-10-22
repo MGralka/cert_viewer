@@ -3,7 +3,7 @@ Gtk+3 based application for viewing SSL/TLS certificates (At the present stage i
 
 ##Library dependencies
 - gtkmm-3.0
-- openssl
+- openssl 1.0.2
 
 ##Building on systems with gcc
 Create a directory named **build/** in the project's parent directory and execute:

@@ -205,5 +205,9 @@ void MainWindow::displayCertificate(const Certificate& c)
 
     row = *(listStore->append());
     row[certColumns.name] = "Is CA";
-    row[certColumns.value] = (c.getIsCA() == true) ? "TRUE" : "FALSE";
+    row[certColumns.value] = (c.getIsCA() == true) ? "Yes" : "No";
+
+    row = *(listStore->append());
+    row[certColumns.name] = "Signature algorithm";
+    row[certColumns.value] = c.getSignatureAlgorithm();
 }

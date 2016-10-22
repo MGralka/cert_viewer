@@ -137,24 +137,25 @@ void Certificate::readCA(X509* x)
     isCA = (X509_check_ca(x) != 0);
 }
 
-void Certificate::readPublicKey(X509* )
+void Certificate::readPublicKey(X509* x)
 {
-//    BUF_MEM* buffer = nullptr;
-//
-//    BIO* memBio = BIO_new(BIO_s_mem());
-//    EVP_PKEY* pkey = X509_get_pubkey(x);
-//    if(pkey)
-//    {
-//        X509_ALGOR *sigAlg = X509_get0_tbs_sigalg(x);
-//        if(sigAlg)
-//        {
-//            i2a_ASN1_OBJECT(memBio, sigAlg->algorithm);
-//            BIO_get_mem_ptr(memBio, &buffer);
-//            publicKey.assign(buffer->data, buffer->length);
-//            std::cout << publicKey << std::endl;
-//        }
-//    }
+    BUF_MEM* buffer = nullptr;
 
- //   EVP_PKEY_free(pkey);
- //   BIO_free(memBio);
+    BIO* memBio = BIO_new(BIO_s_mem());
+    EVP_PKEY* pkey = X509_get_pubkey(x);
+    if(pkey)
+    {
+        X509_ALGOR *sigAlg = nullptr;
+	ASN1_BIT_STRING* sig = nullptr;
+	X509_get0_signature(&sig, &sigAlg, x);
+        if(sigAlg)
+        {
+            i2a_ASN1_OBJECT(memBio, sigAlg->algorithm);
+            BIO_get_mem_ptr(memBio, &buffer);
+            signatureAlgorithm.assign(buffer->data, buffer->length);
+        }
+    }
+
+    EVP_PKEY_free(pkey);
+    BIO_free(memBio);
 }
