@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/MGralka/cert_viewer.svg?branch=master)](https://travis-ci.org/MGralka/cert_viewer)
+
 #Cert Viewer
 Gtk+3 based application for viewing SSL/TLS certificates (At the present stage it's not yet functional).
 
