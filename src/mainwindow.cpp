@@ -49,6 +49,7 @@ void MainWindow::getWidgets()
     builder->get_widget("open_item", openItem);
     builder->get_widget("about_item", aboutItem);
     builder->get_widget("quit_item", quitItem);
+    builder->get_widget("statusbar", statusBar);
 }
 
 void MainWindow::connectSignals()
@@ -151,10 +152,16 @@ void MainWindow::fileChooserResponse(int responseId)
     {
         case Gtk::RESPONSE_OK:
         {
+	    if(!listStore)
+		return;
+
+	    listStore->clear();
+
             if(!fileChooserDlg->get_filename().empty())
             {
                 Certificate c(fileChooserDlg->get_filename());
                 displayCertificate(c);
+		statusBar->push("Certificate read succesfully");
             }
             break;
         }
@@ -166,10 +173,7 @@ void MainWindow::fileChooserResponse(int responseId)
     }
     catch(std::runtime_error& e)
     {
-        Gtk::MessageDialog errDialog(*this, "An error occuerd", false,
-                Gtk::MESSAGE_ERROR);
-        errDialog.set_secondary_text(e.what());
-        errDialog.run();
+	statusBar->push(e.what());
     }
 
 }

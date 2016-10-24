@@ -48,6 +48,7 @@ protected:
     Gtk::ImageMenuItem* openItem;
     Gtk::ImageMenuItem* aboutItem;
     Gtk::ImageMenuItem* quitItem;
+    Gtk::Statusbar* statusBar;
 
     Gtk::AboutDialog* aboutDlg;
     Gtk::FileChooserDialog* fileChooserDlg;

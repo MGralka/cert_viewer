@@ -34,7 +34,7 @@ Certificate::Certificate(const std::string& file): cert(nullptr)
         throw std::runtime_error("Error while opening file");
 
     if(!PEM_read_X509(f, &cert, nullptr, nullptr))
-        throw std::runtime_error("Certificate reading failed");
+        throw std::runtime_error("Error while reading certificate file");
 
     readCertificateData(cert);
 }
